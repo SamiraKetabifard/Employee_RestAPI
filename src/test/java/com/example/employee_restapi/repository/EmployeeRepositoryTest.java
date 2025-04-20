@@ -60,6 +60,25 @@ class EmployeeRepositoryTest {
         assertThat(employees).hasSize(2);
     }
     @Test
+    void testUpdateEmployee() {
+        //Arrange
+        Employee employee = Employee.builder()
+                .name("Samira")
+                .email("samira@gmail.com")
+                .build();
+        Employee savedEmployee = employeeRepository.save(employee);
+        //Act
+        savedEmployee.setName("Updated Samira");
+        savedEmployee.setEmail("updated.samira@gmail.com");
+        Employee updatedEmployee = employeeRepository.save(savedEmployee);
+        //Assert
+        Optional<Employee> foundEmployee = employeeRepository.findById(updatedEmployee.getId());
+        assertThat(foundEmployee).isPresent();
+        assertThat(foundEmployee.get().getName()).isEqualTo("Updated Samira");
+        assertThat(foundEmployee.get().getEmail()).isEqualTo("updated.samira@gmail.com");
+    }
+
+    @Test
     void testDeleteEmployee() {
         // Arrange: Create and save a new employee
         Employee employee = Employee.builder()
