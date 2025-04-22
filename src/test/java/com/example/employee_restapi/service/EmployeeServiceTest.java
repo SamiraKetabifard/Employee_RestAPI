@@ -39,7 +39,7 @@ class EmployeeServiceTest {
     @Test
     void testSaveEmployee() {
         // Arrange
-        when(employeeRepository.save(Mockito.any(Employee.class))).thenReturn(employee);
+        when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
 
         // Act
         Employee savedEmployee = employeeService.saveEmployee(employee);
@@ -80,7 +80,7 @@ class EmployeeServiceTest {
     void testUpdateEmployee() {
         // Arrange
         when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
-        when(employeeRepository.save(Mockito.any(Employee.class))).thenReturn(employee);
+        when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
 
         // Act
         Employee updatedEmployee = employeeService.updateEmployee(1, employee);
@@ -92,16 +92,16 @@ class EmployeeServiceTest {
 
     @Test
     void testDeleteEmployee() {
-        // Arrange: Mock the repository to return an employee when searching by ID
+        // Arrange
         when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
 
-        // Arrange: Mock the repository to do nothing when deleting an employee
+        // Arrange
         doNothing().when(employeeRepository).deleteById(1);
 
-        // Act: Call the deleteEmployee() method in the service layer, which is supposed to delete the employee
+        // Act
         assertDoesNotThrow(() -> employeeService.deleteEmployee(1));
 
-        // Assert: Verify that deleteById() method was called exactly once
+        // Assert
         verify(employeeRepository, times(1)).deleteById(1);
     }
 }
