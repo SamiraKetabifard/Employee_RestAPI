@@ -27,68 +27,57 @@ class EmployeeControllerTest {
     @InjectMocks
     private EmployeeController employeeController;
 
-    private Employee employee1;
-    private Employee employee2;
+    private Employee employee;
 
     @BeforeEach
     void setUp() {
-        employee1 = Employee.builder()
+        employee = Employee.builder()
                 .id(1)
                 .name("zahra")
-                .email("zahra@example.com")
-                .build();
-
-        employee2 = Employee.builder()
-                .id(2)
-                .name("roza")
-                .email("roza@example.com")
+                .email("zahra@gmail.com")
                 .build();
     }
-
     @Test
     void saveEmployee_ShouldReturnCreatedEmployee() {
         // Arrange
-        when(employeeService.saveEmployee(any(Employee.class))).thenReturn(employee1);
-
+        when(employeeService.saveEmployee(any(Employee.class))).thenReturn(employee);
         // Act
-        ResponseEntity<Employee> response = employeeController.saveEmployee(employee1);
-
+        ResponseEntity<Employee> response = employeeController.saveEmployee(employee);
         // Assert
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(employee1, response.getBody());
+        assertEquals(employee, response.getBody());
         verify(employeeService, times(1)).saveEmployee(any(Employee.class));
     }
-
     @Test
     void getAllEmployees_ShouldReturnAllEmployees() {
         // Arrange
-        List<Employee> employees = Arrays.asList(employee1, employee2);
-        when(employeeService.getAllEmployees()).thenReturn(employees);
+        Employee employee2 = Employee.builder()
+                .id(2)
+                .name("roza")
+                .email("roza@gmail.com")
+                .build();
 
+        List<Employee> employees = Arrays.asList(employee, employee2);
+        when(employeeService.getAllEmployees()).thenReturn(employees);
         // Act
         ResponseEntity<List<Employee>> response = employeeController.getAllEmployees();
-
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, response.getBody().size());
         assertEquals(employees, response.getBody());
         verify(employeeService, times(1)).getAllEmployees();
     }
-
     @Test
     void getEmployeeById_WithValidId_ShouldReturnEmployee() {
         // Arrange
-        when(employeeService.getEmployeeById(1)).thenReturn(employee1);
-
+        when(employeeService.getEmployeeById(1)).thenReturn(employee);
         // Act
         ResponseEntity<Employee> response = employeeController.getEmployeeById(1);
-
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(employee1, response.getBody());
+        assertEquals(employee, response.getBody());
         verify(employeeService, times(1)).getEmployeeById(1);
     }
-
     @Test
     void updateEmployee_WithValidId_ShouldReturnUpdatedEmployee() {
         // Arrange
@@ -99,25 +88,20 @@ class EmployeeControllerTest {
                 .build();
 
         when(employeeService.updateEmployee(eq(1), any(Employee.class))).thenReturn(updatedEmployee);
-
         // Act
         ResponseEntity<Employee> response = employeeController.updateEmployee(1, updatedEmployee);
-
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(updatedEmployee, response.getBody());
         assertEquals("samira", response.getBody().getName());
         verify(employeeService, times(1)).updateEmployee(eq(1), any(Employee.class));
     }
-
     @Test
     void deleteEmployee_WithValidId_ShouldReturnSuccessMessage() {
         // Arrange
         doNothing().when(employeeService).deleteEmployee(1);
-
         // Act
         ResponseEntity<String> response = employeeController.deleteEmployee(1);
-
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Employee deleted successfully.", response.getBody());

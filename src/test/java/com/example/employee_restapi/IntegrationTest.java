@@ -52,16 +52,15 @@ class IntegrationTest {
     }
     @Test
     void testGetAllEmployees() throws Exception {
-        // Act
+
         mockMvc.perform(get("/emp/getall"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(1))
                 .andDo(print());
     }
-
     @Test
     void testGetEmployeeById() throws Exception {
-        // Act
+
         mockMvc.perform(get("/emp/get/" + employee.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Samira"))
@@ -72,7 +71,7 @@ class IntegrationTest {
     void testUpdateEmployee() throws Exception {
         // Arrange
         Employee updatedEmployee = new Employee(null, "samira", "samira3@gmail.com");
-        //Act
+        //Act & Assert
         mockMvc.perform(put("/emp/update/" + employee.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(updatedEmployee)))
@@ -80,9 +79,9 @@ class IntegrationTest {
                 .andExpect(jsonPath("$.name").value("samira"))
                 .andDo(print());
     }
-
     @Test
     void testDeleteEmployee() throws Exception{
+
         mockMvc.perform(delete("/emp/delete/" + employee.getId()))
                 .andExpect(status().isOk())
                 .andDo(print());

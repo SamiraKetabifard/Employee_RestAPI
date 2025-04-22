@@ -48,8 +48,14 @@ class EmployeeRepositoryTest {
     @Test
     void testFindAllEmployees() {
         // Arrange: Create and save two employees
-        Employee emp1 = Employee.builder().name("Samira").email("samira@gmail.com").build();
-        Employee emp2 = Employee.builder().name("Zahra").email("zahra@gmail.com").build();
+        Employee emp1 = Employee.builder()
+                .name("Samira")
+                .email("samira@gmail.com")
+                .build();
+        Employee emp2 = Employee.builder()
+                .name("Zahra").
+                email("zahra@gmail.com")
+                .build();
         employeeRepository.save(emp1);
         employeeRepository.save(emp2);
 
@@ -68,16 +74,15 @@ class EmployeeRepositoryTest {
                 .build();
         Employee savedEmployee = employeeRepository.save(employee);
         //Act
-        savedEmployee.setName("Updated Samira");
-        savedEmployee.setEmail("updated.samira@gmail.com");
+        savedEmployee.setName("Samira Ketabi");
+        savedEmployee.setEmail("samira11@gmail.com");
         Employee updatedEmployee = employeeRepository.save(savedEmployee);
         //Assert
         Optional<Employee> foundEmployee = employeeRepository.findById(updatedEmployee.getId());
         assertThat(foundEmployee).isPresent();
-        assertThat(foundEmployee.get().getName()).isEqualTo("Updated Samira");
-        assertThat(foundEmployee.get().getEmail()).isEqualTo("updated.samira@gmail.com");
+        assertThat(foundEmployee.get().getName()).isEqualTo("Samira Ketabi");
+        assertThat(foundEmployee.get().getEmail()).isEqualTo("samira11@gmail.com");
     }
-
     @Test
     void testDeleteEmployee() {
         // Arrange: Create and save a new employee
@@ -94,5 +99,4 @@ class EmployeeRepositoryTest {
         Optional<Employee> deletedEmployee = employeeRepository.findById(savedEmployee.getId());
         assertThat(deletedEmployee).isEmpty();
     }
-
 }
