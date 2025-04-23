@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.List;
@@ -35,72 +34,62 @@ class EmployeeServiceTest {
                 .email("samira@gmail.com")
                 .build();
     }
-
     @Test
     void testSaveEmployee() {
         // Arrange
         when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
-
         // Act
         Employee savedEmployee = employeeService.saveEmployee(employee);
-
         // Assert
         assertNotNull(savedEmployee);
         assertEquals("Samira", savedEmployee.getName());
         assertEquals("samira@gmail.com", savedEmployee.getEmail());
     }
-
     @Test
     void testGetAllEmployees() {
         // Arrange
         List<Employee> employees = Arrays.asList(employee);
         when(employeeRepository.findAll()).thenReturn(employees);
-
         // Act
         List<Employee> result = employeeService.getAllEmployees();
-
         // Assert
         assertEquals(1, result.size());
     }
-
     @Test
     void testGetEmployeeById() {
         // Arrange
         when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
-
         // Act
         Employee foundEmployee = employeeService.getEmployeeById(1);
-
         // Assert
         assertNotNull(foundEmployee);
         assertEquals(1, foundEmployee.getId());
     }
-
     @Test
     void testUpdateEmployee() {
         // Arrange
         when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
-        when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
+        when(employeeRepository.save(any(Employee.class))).thenAnswer
+                (invocation -> invocation.getArgument(0));
 
+        Employee updatedInfo = Employee.builder()
+                .name("roz")
+                .email("roz@gmail.com")
+                .build();
         // Act
-        Employee updatedEmployee = employeeService.updateEmployee(1, employee);
-
+        Employee result = employeeService.updateEmployee(1, updatedInfo);
         // Assert
-        assertNotNull(updatedEmployee);
-        assertEquals("Samira", updatedEmployee.getName());
+        assertEquals("roz", result.getName());
+        assertEquals("roz@gmail.com", result.getEmail());
+        verify(employeeRepository).save(any(Employee.class));
     }
-
     @Test
     void testDeleteEmployee() {
         // Arrange
         when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
-
-        // Arrange
         doNothing().when(employeeRepository).deleteById(1);
-
         // Act
         assertDoesNotThrow(() -> employeeService.deleteEmployee(1));
-
         // Assert
         verify(employeeRepository, times(1)).deleteById(1);
     }

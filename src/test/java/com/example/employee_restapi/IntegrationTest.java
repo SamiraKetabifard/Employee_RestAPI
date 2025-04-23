@@ -34,13 +34,14 @@ class IntegrationTest {
     @BeforeEach
     void setUp() {
         employeeRepository.deleteAll();
-        employee = employeeRepository.save(new Employee(null, "Samira", "samira@gmail.com"));
+        employee = employeeRepository.save
+                (new Employee(null, "Samira", "samira@gmail.com"));
     }
     @Test
     void testCreateEmployee() throws Exception {
         // Arrange
-        Employee newEmployee = new Employee(null, "Samira", "samira@gmail.com");
-
+        Employee newEmployee = new Employee
+                (null, "Samira", "samira@gmail.com");
         // Act
         mockMvc.perform(post("/emp/create")
                         .contentType(MediaType.APPLICATION_JSON)
