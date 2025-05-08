@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "employees")
 
-    public class Employee {
+public class Employee {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-        @Column(name = "Name")
-        private String name;
+    @Column(name = "Name")
+    private String name;
 
-        @Column(name = "Email")
-        private String email;
-    }
+    @Column(name = "Email")
+    private String email;
+}

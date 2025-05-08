@@ -17,12 +17,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
     }
-
     @Override
     public Employee saveEmployee(Employee employee) {
         return employeeRepository.save(employee);
     }
-
     @Override
     public Employee getEmployeeById(Integer id) {
         Optional<Employee> employee = employeeRepository.findById(id);
@@ -40,7 +38,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         existedEmployee.setName(employee.getName());
         return employeeRepository.save(existedEmployee);
     }
-
     @Override
     public void deleteEmployee(Integer id) {
         employeeRepository.findById(id)
