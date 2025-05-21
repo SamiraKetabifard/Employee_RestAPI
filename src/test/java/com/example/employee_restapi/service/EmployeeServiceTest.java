@@ -87,10 +87,10 @@ class EmployeeServiceTest {
     void testDeleteEmployee() {
         // Arrange
         when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
+        //Act
         doNothing().when(employeeRepository).deleteById(1);
-        // Act
-        assertDoesNotThrow(() -> employeeService.deleteEmployee(1));
         // Assert
+        assertDoesNotThrow(() -> employeeService.deleteEmployee(1));
         verify(employeeRepository, times(1)).deleteById(1);
     }
 }

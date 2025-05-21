@@ -1,5 +1,4 @@
 package com.example.employee_restapi.repository;
-
 import com.example.employee_restapi.entity.Employee;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +20,8 @@ class EmployeeRepositoryTest {
                 .name("Samira")
                 .email("samira@gmail.com")
                 .build();
-
         // Act: Save the employee and retrieve the saved entity
         Employee savedEmployee = employeeRepository.save(employee);
-
         // Assert: Verify that the saved employee is not null and has a valid ID
         assertThat(savedEmployee).isNotNull();
         assertThat(savedEmployee.getId()).isGreaterThan(0);
@@ -37,10 +34,8 @@ class EmployeeRepositoryTest {
                 .email("zahra@gmail.com")
                 .build();
         Employee savedEmployee = employeeRepository.save(employee);
-
         // Act: Retrieve the employee by its ID
         Optional<Employee> foundEmployee = employeeRepository.findById(savedEmployee.getId());
-
         // Assert: Verify that the employee is found and has the expected name
         assertThat(foundEmployee).isPresent();
         assertThat(foundEmployee.get().getName()).isEqualTo("Zahra");
@@ -58,10 +53,8 @@ class EmployeeRepositoryTest {
                 .build();
         employeeRepository.save(emp1);
         employeeRepository.save(emp2);
-
         // Act: Retrieve all employees from the repository
         List<Employee> employees = employeeRepository.findAll();
-
         // Assert: Verify that the list contains exactly 2 employees
         assertThat(employees).hasSize(2);
     }
@@ -77,8 +70,8 @@ class EmployeeRepositoryTest {
         savedEmployee.setName("Samira Ketabi");
         savedEmployee.setEmail("samira11@gmail.com");
         Employee updatedEmployee = employeeRepository.save(savedEmployee);
-        //Assert
         Optional<Employee> foundEmployee = employeeRepository.findById(updatedEmployee.getId());
+        //assert
         assertThat(foundEmployee).isPresent();
         assertThat(foundEmployee.get().getName()).isEqualTo("Samira Ketabi");
         assertThat(foundEmployee.get().getEmail()).isEqualTo("samira11@gmail.com");
@@ -91,10 +84,8 @@ class EmployeeRepositoryTest {
                 .email("samira@gmail.com")
                 .build();
         Employee savedEmployee = employeeRepository.save(employee);
-
         // Act: Delete the employee
         employeeRepository.deleteById(savedEmployee.getId());
-
         // Assert: Check that the employee is deleted
         Optional<Employee> deletedEmployee = employeeRepository.findById(savedEmployee.getId());
         assertThat(deletedEmployee).isEmpty();
