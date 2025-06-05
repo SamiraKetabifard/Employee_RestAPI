@@ -79,6 +79,18 @@ class EmployeeControllerTest {
         verify(employeeService, times(1)).getEmployeeById(1);
     }
     @Test
+    void getEmployeeById_WhenEmployeeNotFound_ShouldThrowException() {
+        // Arrange
+        when(employeeService.getEmployeeById(999)).thenThrow(new RuntimeException("Employee not found"));
+
+        // Act & Assert
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            employeeController.getEmployeeById(999);
+        });
+
+        assertEquals("Employee not found", exception.getMessage());
+    }
+    @Test
     void updateEmployee_WithValidId_ShouldReturnUpdatedEmployee() {
         // Arrange
         Employee updatedEmployee = Employee.builder()
@@ -97,6 +109,23 @@ class EmployeeControllerTest {
         verify(employeeService, times(1)).updateEmployee(eq(1), any(Employee.class));
     }
     @Test
+    void updateEmployee_WhenEmployeeNotFound_ShouldThrowException() {
+        Employee updatedEmployee = Employee.builder()
+                .id(999)
+                .name("t")
+                .email("t@gmail.com")
+                .build();
+
+        when(employeeService.updateEmployee(eq(999), any(Employee.class)))
+                .thenThrow(new RuntimeException("Employee not found"));
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            employeeController.updateEmployee(999, updatedEmployee);
+        });
+
+        assertEquals("Employee not found", exception.getMessage());
+    }
+    @Test
     void deleteEmployee_WithValidId_ShouldReturnSuccessMessage() {
         // Arrange
         doNothing().when(employeeService).deleteEmployee(1);
@@ -106,5 +135,15 @@ class EmployeeControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Employee deleted successfully.", response.getBody());
         verify(employeeService, times(1)).deleteEmployee(1);
+    }
+    @Test
+    void deleteEmployee_WhenEmployeeNotFound_ShouldThrowException() {
+        doThrow(new RuntimeException("Employee not found")).when(employeeService).deleteEmployee(999);
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            employeeController.deleteEmployee(999);
+        });
+
+        assertEquals("Employee not found", exception.getMessage());
     }
 }

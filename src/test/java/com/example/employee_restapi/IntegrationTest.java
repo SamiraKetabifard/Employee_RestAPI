@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 // This is an integration test that tests the full stack, including the controller, service, and repository layers.
 // It simulates HTTP requests and verifies the responses, with real database interactions (rolled back after tests).
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional

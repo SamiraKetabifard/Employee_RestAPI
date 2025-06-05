@@ -1,4 +1,5 @@
 package com.example.employee_restapi.controller;
+
 import com.example.employee_restapi.entity.Employee;
 import com.example.employee_restapi.service.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class EmployeeControllerTestMockito {
 
     private MockMvc mockMvc;
-
     private ObjectMapper objectMapper;
 
     @Mock
@@ -30,9 +30,9 @@ class EmployeeControllerTestMockito {
     @InjectMocks
     private EmployeeController employeeController;
 
-    Employee emp1 = new Employee(1, "Ali", "ali@example.com");
-    Employee emp2 = new Employee(2, "Sara", "sara@example.com");
-    Employee emp3 = new Employee(3, "Reza", "reza@example.com");
+    Employee emp1 = new Employee(1, "Ali", "ali@gmail.com");
+    Employee emp2 = new Employee(2, "Sara", "sara@gmail.com");
+    Employee emp3 = new Employee(3, "Reza", "reza@gmail.com");
 
     @BeforeEach
     void setUp() {
@@ -43,7 +43,7 @@ class EmployeeControllerTestMockito {
 
     @Test
     void saveEmployee() throws Exception {
-        Employee emp = new Employee(4, "Mina", "mina@example.com");
+        Employee emp = new Employee(4, "Mina", "mina@gmail.com");
         Mockito.when(employeeService.saveEmployee(emp)).thenReturn(emp);
 
         String content = objectMapper.writeValueAsString(emp);
@@ -56,7 +56,7 @@ class EmployeeControllerTestMockito {
         mockMvc.perform(request)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is("Mina")))
-                .andExpect(jsonPath("$.email", is("mina@example.com")));
+                .andExpect(jsonPath("$.email", is("mina@gmail.com")));
     }
 
     @Test
@@ -78,25 +78,22 @@ class EmployeeControllerTestMockito {
         mockMvc.perform(MockMvcRequestBuilders.get("/emp/get/2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email", is("sara@example.com")));
+                .andExpect(jsonPath("$.email", is("sara@gmail.com")));
     }
-
     @Test
     void updateEmployee() throws Exception {
-        Employee updatedEmp = new Employee(1, "Ali Updated", "ali_updated@example.com");
+        Employee updatedEmp = new Employee(1, "Ali Updated", "ali_updated@gmail.com");
         Mockito.when(employeeService.updateEmployee(1, updatedEmp)).thenReturn(updatedEmp);
 
         String content = objectMapper.writeValueAsString(updatedEmp);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put("/emp/update/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(content);
-
-        mockMvc.perform(request)
+        mockMvc.perform(MockMvcRequestBuilders.put("/emp/update/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(content))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("Ali Updated")))
-                .andExpect(jsonPath("$.email", is("ali_updated@example.com")));
+                .andExpect(jsonPath("$.email", is("ali_updated@gmail.com")));
     }
 
     @Test
@@ -108,4 +105,5 @@ class EmployeeControllerTestMockito {
                 .andExpect(status().isOk())
                 .andExpect(content().string("Employee deleted successfully."));
     }
+
 }

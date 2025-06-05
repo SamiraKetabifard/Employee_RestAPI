@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
@@ -92,5 +93,41 @@ class EmployeeServiceTest {
         // Assert
         assertDoesNotThrow(() -> employeeService.deleteEmployee(1));
         verify(employeeRepository, times(1)).deleteById(1);
+    }
+    @Test
+    void testGetEmployeeById_WhenNotFound_ShouldThrowRuntimeException() {
+        when(employeeRepository.findById(999)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> employeeService.getEmployeeById(999));
+
+        assertEquals("Employee Not Found", exception.getMessage());
+    }
+
+    @Test
+    void testUpdateEmployee_WhenNotFound_ShouldThrowRuntimeException() {
+        when(employeeRepository.findById(999)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> employeeService.updateEmployee(999, employee));
+
+        assertEquals("Employee Not Found With Id : 999", exception.getMessage());
+    }
+    @Test
+    void testDeleteEmployee_WhenNotFound_ShouldThrowRuntimeException() {
+        when(employeeRepository.findById(999)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> employeeService.deleteEmployee(999));
+
+        assertEquals("Employee Not Found With Id : 999", exception.getMessage());
+    }
+    @Test
+    void testGetAllEmployees_WhenEmpty_ShouldReturnEmptyList() {
+        when(employeeRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<Employee> result = employeeService.getAllEmployees();
+
+        assertTrue(result.isEmpty());
     }
 }
