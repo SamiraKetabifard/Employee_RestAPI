@@ -5,10 +5,12 @@ import com.example.employee_restapi.service.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -19,6 +21,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ExtendWith(MockitoExtension.class)
 class EmployeeControllerTestMockito {
 
     private MockMvc mockMvc;
@@ -36,7 +39,6 @@ class EmployeeControllerTestMockito {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(employeeController).build();
         objectMapper = new ObjectMapper();
     }

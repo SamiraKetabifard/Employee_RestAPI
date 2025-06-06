@@ -143,7 +143,6 @@ class EmployeeControllerTest {
         Exception exception = assertThrows(RuntimeException.class, () -> {
             employeeController.deleteEmployee(999);
         });
-
         assertEquals("Employee not found", exception.getMessage());
     }
 }
