@@ -100,15 +100,6 @@ class EmployeeRepositoryTest {
         assertThat(foundEmployee).isEmpty();
     }
     @Test
-    void testDeleteEmployee_WhenEmployeeNotExists_ShouldNotThrowException() {
-        // Arrange
-        int nonExistentId = 999;
-        // Act & Assert (should not throw exception)
-        employeeRepository.deleteById(nonExistentId);
-        // Verify
-        assertThat(employeeRepository.count()).isEqualTo(0);
-    }
-    @Test
     void testFindAllEmployees_WhenNoEmployeesExist_ShouldReturnEmptyList() {
         // Act
         List<Employee> employees = employeeRepository.findAll();

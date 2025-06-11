@@ -92,59 +92,62 @@ class EmployeeServiceTestMockito {
     }
     @Test
     void findById_WhenEmployeeNotFound_ShouldThrowRuntimeException() {
+        //arrange
         int nonExistentId = 999;
         when(employeeRepository.findById(nonExistentId)).thenReturn(Optional.empty());
-
-        RuntimeException exception = assertThrows(RuntimeException.class,
+        //act
+        Exception exception = assertThrows(RuntimeException.class,
                 () -> employeeService.getEmployeeById(nonExistentId));
-
+        //assert
         assertEquals("Employee Not Found", exception.getMessage());
         verify(employeeRepository, times(1)).findById(nonExistentId);
     }
     @Test
     void update_WhenEmployeeNotFound_ShouldThrowRuntimeException() {
+        //arrange
         int nonExistentId = 999;
         when(employeeRepository.findById(nonExistentId)).thenReturn(Optional.empty());
-        Employee updateData = Employee.builder().name("Update").build();
-
+        Employee updateData = Employee.builder().name("joe").build();
+        //act
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> employeeService.updateEmployee(nonExistentId, updateData));
-
+        //assert
         assertEquals("Employee Not Found With Id : " + nonExistentId, exception.getMessage());
         verify(employeeRepository, times(1)).findById(nonExistentId);
         verify(employeeRepository, never()).save(any());
     }
-
     @Test
     void update_WithNullEmployee_ShouldThrowNullPointerException() {
+        //arrange
         int existingId = 1;
         when(employeeRepository.findById(existingId))
                 .thenReturn(Optional.of(Employee.builder().id(existingId).build()));
-
+        //act
         assertThrows(NullPointerException.class,
                 () -> employeeService.updateEmployee(existingId, null));
-
+        //assert
         verify(employeeRepository, times(1)).findById(existingId);
     }
     @Test
     void delete_WhenEmployeeNotFound_ShouldThrowRuntimeException() {
+        //arrange
         int nonExistentId = 999;
         when(employeeRepository.findById(nonExistentId)).thenReturn(Optional.empty());
-
-        RuntimeException exception = assertThrows(RuntimeException.class,
+        //act
+        Exception exception = assertThrows(RuntimeException.class,
                 () -> employeeService.deleteEmployee(nonExistentId));
-
+        //assert
         assertEquals("Employee Not Found With Id : " + nonExistentId, exception.getMessage());
         verify(employeeRepository, times(1)).findById(nonExistentId);
         verify(employeeRepository, never()).deleteById(any());
     }
-
     @Test
     void findAll_WhenNoEmployees_ShouldReturnEmptyList() {
+        //arrange
         when(employeeRepository.findAll()).thenReturn(Collections.emptyList());
-
+        //act
         List<Employee> result = employeeService.getAllEmployees();
-
+        //assert
         assertTrue(result.isEmpty());
         verify(employeeRepository, times(1)).findAll();
     }

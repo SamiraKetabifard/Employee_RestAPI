@@ -96,38 +96,41 @@ class EmployeeServiceTest {
     }
     @Test
     void testGetEmployeeById_WhenNotFound_ShouldThrowRuntimeException() {
+        //arrange
         when(employeeRepository.findById(999)).thenReturn(Optional.empty());
-
+        //act
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> employeeService.getEmployeeById(999));
-
+        //assert
         assertEquals("Employee Not Found", exception.getMessage());
     }
-
     @Test
     void testUpdateEmployee_WhenNotFound_ShouldThrowRuntimeException() {
+        //arrange
         when(employeeRepository.findById(999)).thenReturn(Optional.empty());
-
+        //act
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> employeeService.updateEmployee(999, employee));
-
+        //assert
         assertEquals("Employee Not Found With Id : 999", exception.getMessage());
     }
     @Test
     void testDeleteEmployee_WhenNotFound_ShouldThrowRuntimeException() {
+        //arrange
         when(employeeRepository.findById(999)).thenReturn(Optional.empty());
-
+        //act
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> employeeService.deleteEmployee(999));
-
+        //assert
         assertEquals("Employee Not Found With Id : 999", exception.getMessage());
     }
     @Test
     void testGetAllEmployees_WhenEmpty_ShouldReturnEmptyList() {
+        //arrange
         when(employeeRepository.findAll()).thenReturn(Collections.emptyList());
-
+        //act
         List<Employee> result = employeeService.getAllEmployees();
-
+        //assert
         assertTrue(result.isEmpty());
     }
 }

@@ -110,19 +110,19 @@ class EmployeeControllerTest {
     }
     @Test
     void updateEmployee_WhenEmployeeNotFound_ShouldThrowException() {
+        //arrange
         Employee updatedEmployee = Employee.builder()
                 .id(999)
                 .name("t")
                 .email("t@gmail.com")
                 .build();
-
+        //act
         when(employeeService.updateEmployee(eq(999), any(Employee.class)))
                 .thenThrow(new RuntimeException("Employee not found"));
-
+        //assert
         Exception exception = assertThrows(RuntimeException.class, () -> {
             employeeController.updateEmployee(999, updatedEmployee);
         });
-
         assertEquals("Employee not found", exception.getMessage());
     }
     @Test
@@ -138,11 +138,13 @@ class EmployeeControllerTest {
     }
     @Test
     void deleteEmployee_WhenEmployeeNotFound_ShouldThrowException() {
+        //arrange
         doThrow(new RuntimeException("Employee not found")).when(employeeService).deleteEmployee(999);
-
+        //act
         Exception exception = assertThrows(RuntimeException.class, () -> {
             employeeController.deleteEmployee(999);
         });
+        //assert
         assertEquals("Employee not found", exception.getMessage());
     }
 }
